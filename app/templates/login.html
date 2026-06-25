@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Connexion') }} | عfreet{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+    <div class="row g-3 align-items-stretch justify-content-center">
+        <div class="col-md-5 col-lg-4 d-none d-md-block">
+            <div class="hero-panel card-platform auth-panel h-100">
+                <div class="eyebrow mb-2">
+                    <i class="bi bi-book-half"></i>{{ _('Plateforme e-learning arabe') }}
+                </div>
+                <h1 class="h3 fw-bold mb-2">{{ _("Connectez-vous a عfreet") }}</h1>
+                <p class="mb-2">
+                    {{ _("Retrouvez vos cours et votre progression en un seul endroit.") }}
+                </p>
+                <p class="arabic-text mb-0" style="color:#fff;">
+                    ابدأ رحلتك في تعلم اللغة العربية اليوم
+                </p>
+            </div>
+        </div>
+        <div class="col-md-7 col-lg-4">
+            <div class="card-platform p-3 p-md-4 auth-panel h-100">
+                <h2 class="h4 fw-bold mb-3">{{ _('Se connecter') }}</h2>
+                <p class="text-muted mb-3">{{ _('Utilisez votre adresse email et votre mot de passe pour acceder directement a vos cours.') }}</p>
+                <div id="login-status" class="alert alert-danger d-none" role="alert"></div>
+
+                <form method="POST" action="{{ url_for('main.login') }}" id="login-form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label fw-semibold") }}
+                        {{ form.email(class="form-control", autocomplete="username", inputmode="email", autocapitalize="none", spellcheck="false", maxlength="120", required=True, placeholder=_('Email')) }}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.mot_de_passe.label(class="form-label fw-semibold") }}
+                        {{ form.mot_de_passe(class="form-control", autocomplete="current-password", maxlength="128", required=True, placeholder=_('Mot de passe')) }}
+                    </div>
+
+                    <div class="form-check mb-3">
+                        {{ form.remember(class="form-check-input") }}
+                        {{ form.remember.label(class="form-check-label") }}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary-platform", id="login-submit") }}
+                        <a href="{{ url_for('main.request_reset_password') }}" class="btn btn-outline-platform">
+                            {{ _('Mot de passe oublie') }}
+                        </a>
+                    </div>
+                </form>
+
+                <div class="auth-footer-links mt-4 pt-3 border-top">
+                    <div class="small text-muted mb-2">{{ _('Pas encore de compte etudiant ?') }}</div>
+                    <a href="{{ url_for('main.register') }}" class="btn btn-outline-platform w-100">
+                        {{ _('Creer mon compte etudiant') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

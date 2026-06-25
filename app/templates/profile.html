@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Profil') }}{% endblock %}
+
+{% block content %}
+{% set initials_source = (current_user.prenom or current_user.nom or current_user.email or 'U') %}
+<div class="profile-shell">
+    <section class="profile-hero card-platform">
+        <div class="profile-avatar-shell">
+            {% if profile_image_url %}
+            <img src="{{ profile_image_url }}" alt="{{ _('Photo de profil') }}" class="profile-avatar-image">
+            {% else %}
+            <span class="profile-avatar-fallback">{{ initials_source[:1]|upper }}</span>
+            {% endif %}
+        </div>
+
+        <div class="profile-hero-copy">
+            <div class="eyebrow mb-3">
+                <i class="bi bi-person-badge"></i>{{ _('Mon profil') }}
+            </div>
+            <h1 class="h3 fw-bold mb-1">{{ current_user.nom_complet }}</h1>
+            <p class="text-muted mb-3">{{ current_user.email }}</p>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge-role badge-role-{{ current_user.role }}">{{ current_user.role }}</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <section class="card-platform profile-panel">
+                <div class="d-flex align-items-center justify-content-between gap-3 mb-4">
+                    <div>
+                        <h2 class="h5 fw-bold mb-1">{{ _('Informations personnelles') }}</h2>
+                        <p class="text-muted mb-0">{{ _('Mettez a jour vos informations et votre photo de profil.') }}</p>
+                    </div>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" class="row g-3">
+                    {{ form.hidden_tag() }}
+                    <div class="col-md-6">
+                        <label class="form-label">{{ form.nom.label.text }}</label>
+                        {{ form.nom(class="form-control", maxlength="100", autocomplete="family-name") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">{{ form.prenom.label.text }}</label>
+                        {{ form.prenom(class="form-control", maxlength="100", autocomplete="given-name") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">{{ _('Email') }}</label>
+                        <input type="text" class="form-control bg-light" value="{{ current_user.email }}" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">{{ form.telephone.label.text }}</label>
+                        {{ form.telephone(class="form-control", maxlength="20", autocomplete="tel") }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">{{ form.photo.label.text }}</label>
+                        {{ form.photo(class="form-control", accept=".png,.jpg,.jpeg,.gif,.webp") }}
+                    </div>
+                    <div class="col-12 d-flex justify-content-end">
+                        {{ form.submit(class="btn btn-primary-platform") }}
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="col-lg-5">
+            <section class="card-platform profile-side-panel">
+                <h2 class="h5 fw-bold mb-3">{{ _('Apercu') }}</h2>
+                <div class="profile-preview-card">
+                    <div class="profile-preview-avatar">
+                        {% if profile_image_url %}
+                        <img src="{{ profile_image_url }}" alt="{{ _('Photo de profil') }}" class="profile-avatar-image">
+                        {% else %}
+                        <span class="profile-avatar-fallback">{{ initials_source[:1]|upper }}</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="fw-bold">{{ current_user.nom_complet }}</div>
+                        <div class="text-muted small">{{ current_user.email }}</div>
+                    </div>
+                </div>
+                <div class="info-list mt-4">
+                    <div class="info-item">
+                        <span class="info-label">{{ _('Telephone') }}</span>
+                        <span class="info-value">{{ current_user.telephone or '-' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">{{ _('Derniere connexion') }}</span>
+                        <span class="info-value">{{ current_user.dernier_acces or '-' }}</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

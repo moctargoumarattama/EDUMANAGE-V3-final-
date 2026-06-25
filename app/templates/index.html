@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}عfreet | {{ _("Apprendre l'arabe") }}{% endblock %}
+
+{% block content %}
+<div class="home-landing">
+    <section class="hero-panel home-hero-panel">
+        <div class="home-hero-shell">
+            <div class="home-hero-copy">
+                <div class="eyebrow home-hero-eyebrow">
+                    <i class="bi bi-stars"></i>{{ _('Plateforme e-learning arabe') }}
+                </div>
+                <h1 class="home-hero-title">{{ _("Apprenez l'arabe à votre rythme") }}</h1>
+                <p class="arabic-text home-hero-arabic" lang="ar">
+                    مرحباً بك في منصة تعلم اللغة العربية
+                </p>
+            </div>
+            <aside class="home-hero-credit home-hero-credit--desktop" dir="ltr" aria-label="Designed and developed by">
+                <div class="home-hero-credit__label">Designed &amp; Developed by:</div>
+                <div class="home-hero-credit__names">
+                    <span>Fayrouz Haddaoui</span>
+                    <span>Kaoutar Amrhil</span>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section id="niveaux" class="home-learning-board">
+        <div class="home-section-heading">{{ _('Choisir un niveau') }}</div>
+        <div class="home-path-grid">
+            {% for niveau, label, desc in [
+                ('A1', _('Débutant'), _('Les bases : alphabet, salutations, chiffres')),
+                ('A2', _('Élémentaire'), _('Conversations simples du quotidien'))
+            ] %}
+                <div class="home-level-card home-level-card-{{ niveau|lower }}">
+                    <div class="home-level-card-inner">
+                        <span class="badge-niveau badge-{{ niveau }} home-level-badge">{{ niveau }}</span>
+                        <div class="home-level-label">{{ label }}</div>
+                        <div class="home-level-desc">{{ desc }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <article class="home-feature-card home-feature-card-learn">
+                <div class="home-feature-card-head">
+                    <span class="home-feature-icon home-feature-icon-learn"><i class="bi bi-play-circle"></i></span>
+                    <div class="eyebrow home-feature-kicker home-feature-kicker-learn">{{ _('Apprendre') }}</div>
+                </div>
+                <h3>{{ _('Leçons immersives') }}</h3>
+                <p>{{ _('Des séquences courtes avec texte, vidéo et PDF pour avancer sans se perdre.') }}</p>
+                <div class="home-feature-meta">{{ _('Cours guidés') }}</div>
+            </article>
+            <article class="home-feature-card home-feature-card-check">
+                <div class="home-feature-card-head">
+                    <span class="home-feature-icon home-feature-icon-check"><i class="bi bi-patch-check"></i></span>
+                    <div class="eyebrow home-feature-kicker home-feature-kicker-check">{{ _("S'évaluer") }}</div>
+                </div>
+                <h3>{{ _('Quiz interactifs') }}</h3>
+                <p>{{ _("Des QCM rapides avec correction claire pour reprendre les notions fragiles.") }}</p>
+                <div class="home-feature-meta">{{ _('Feedback immédiat') }}</div>
+            </article>
+            <article class="home-feature-card home-feature-card-progress">
+                <div class="home-feature-card-head">
+                    <span class="home-feature-icon home-feature-icon-progress"><i class="bi bi-graph-up-arrow"></i></span>
+                    <div class="eyebrow home-feature-kicker home-feature-kicker-progress">{{ _('Progresser') }}</div>
+                </div>
+                <h3>{{ _('Suivi visuel') }}</h3>
+                <p>{{ _('Scores et progression visibles pour savoir exactement quoi travailler ensuite.') }}</p>
+                <div class="home-feature-meta">{{ _('Parcours clair') }}</div>
+            </article>
+        </div>
+    </section>
+</div>
+{% endblock %}

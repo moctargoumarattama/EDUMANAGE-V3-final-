@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="{{ current_locale or 'fr' }}" dir="{{ current_text_direction or 'ltr' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#6C3CE1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="application-name" content="&#8206;عfreet">
+    <meta name="apple-mobile-web-app-title" content="&#8206;عfreet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="app-auth-fingerprint" content="{% if current_user.is_authenticated %}user:{{ current_user.id }}:{{ current_user.role }}{% else %}anonymous{% endif %}">
+    <title>{% block title %}عfreet{% endblock %}</title>
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json', v=asset_version) }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32.png', v=asset_version) }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icons/icon-192.png', v=asset_version) }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png', v=asset_version) }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css', v=asset_version) }}">
+    <style data-premium-loader-critical>
+        .app-premium-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 2200;
+            display: grid;
+            place-items: center;
+            padding:
+                max(calc(env(safe-area-inset-top) + 24px), 24px)
+                24px
+                max(calc(env(safe-area-inset-bottom) + 24px), 24px);
+            opacity: 0;
+            pointer-events: none;
+            overflow: hidden;
+            transition: opacity 220ms ease;
+            background:
+                radial-gradient(circle at 16% 18%, rgba(255, 219, 153, 0.22) 0%, transparent 30%),
+                radial-gradient(circle at 84% 14%, rgba(255, 244, 216, 0.16) 0%, transparent 24%),
+                radial-gradient(circle at 50% 60%, rgba(186, 143, 255, 0.18) 0%, transparent 42%),
+                linear-gradient(180deg, #250847 0%, #3d1172 48%, #1c0637 100%);
+        }
+
+        .app-premium-loader--visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .app-premium-loader--hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .app-premium-loader__panel {
+            position: relative;
+            display: grid;
+            place-self: center;
+            justify-items: center;
+            gap: 0.75rem;
+            width: min(100%, 360px);
+            padding: 1.6rem 1.5rem 1.45rem;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 228, 176, 0.26);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%),
+                linear-gradient(145deg, rgba(84, 25, 157, 0.74) 0%, rgba(55, 14, 107, 0.9) 100%);
+            box-shadow:
+                0 28px 70px rgba(11, 2, 28, 0.48),
+                inset 0 1px 0 rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(16px);
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .app-premium-loader__panel--nav {
+            display: none;
+        }
+
+        .app-premium-loader__logo-shell {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            background:
+                linear-gradient(145deg, rgba(255, 229, 180, 0.95) 0%, rgba(244, 183, 74, 0.94) 36%, rgba(120, 67, 217, 0.9) 100%);
+            box-shadow: 0 20px 34px rgba(18, 4, 45, 0.34), inset 0 1px 10px rgba(255, 255, 255, 0.32);
+            overflow: hidden;
+        }
+
+        .app-premium-loader__logo-image {
+            width: 76px;
+            height: 76px;
+            object-fit: contain;
+        }
+
+        .app-premium-loader__brand {
+            color: #fff9ec;
+            font-size: 1.22rem;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+            text-align: center;
+        }
+
+        .app-premium-loader__tagline {
+            color: rgba(255, 236, 198, 0.84);
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .app-premium-loader__glow,
+        .app-premium-loader__ring,
+        .app-premium-loader__shine,
+        .app-premium-loader__orb,
+        .app-premium-loader__pulse-track {
+            display: none;
+        }
+    </style>
+    <meta data-app-head-boundary="start">
+    {% block extra_css %}{% endblock %}
+    <meta data-app-head-boundary="end">
+</head>
+<body>
+    {% set endpoint = request.endpoint or '' %}
+    {% set notification_unread = notification_summary['unread_count'] if notification_summary else 0 %}
+    {% set notification_items = notification_summary['items'] if notification_summary else [] %}
+    {% set lang_label = current_language.short_label if current_language else (current_locale or 'fr')|upper %}
+    {% set language_next_url = request.full_path if request.query_string else request.path %}
+
+    <div class="app-nav-progress" aria-hidden="true"></div>
+    <div id="app-premium-loader" class="app-premium-loader app-premium-loader--visible app-premium-loader--boot" aria-hidden="true">
+        <div class="app-premium-loader__backdrop"></div>
+        <div class="app-premium-loader__orb app-premium-loader__orb--one"></div>
+        <div class="app-premium-loader__orb app-premium-loader__orb--two"></div>
+        <div class="app-premium-loader__orb app-premium-loader__orb--three"></div>
+
+        <div class="app-premium-loader__panel app-premium-loader__panel--boot" data-premium-loader-state="boot">
+            <span class="app-premium-loader__glow"></span>
+            <span class="app-premium-loader__ring"></span>
+            <span class="app-premium-loader__shine"></span>
+            <span class="app-premium-loader__logo-shell">
+                <img src="{{ url_for('static', filename='images/LOGO.jpeg', v=asset_version) }}" alt="" class="app-premium-loader__logo-image">
+            </span>
+            <span class="app-premium-loader__brand">عfreet</span>
+            <span class="app-premium-loader__tagline">Version 4.0 · Luxe dore</span>
+            <span class="app-premium-loader__pulse-track" aria-hidden="true">
+                <span class="app-premium-loader__pulse-dot"></span>
+            </span>
+        </div>
+
+        <div class="app-premium-loader__panel app-premium-loader__panel--nav" data-premium-loader-state="nav">
+            <span class="app-premium-loader__glow"></span>
+            <span class="app-premium-loader__ring"></span>
+            <span class="app-premium-loader__shine"></span>
+            <span class="app-premium-loader__logo-shell app-premium-loader__logo-shell--nav">
+                <img src="{{ url_for('static', filename='images/LOGO.jpeg', v=asset_version) }}" alt="" class="app-premium-loader__logo-image">
+            </span>
+            <span class="app-premium-loader__brand app-premium-loader__brand--nav">عfreet</span>
+        </div>
+    </div>
+
+    <nav id="app-navbar" class="navbar navbar-expand-lg navbar-platform fixed-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand brand-signature d-flex align-items-center gap-3" href="{{ url_for('main.index') }}">
+                <span class="brand-mark" aria-hidden="true">
+                    <img src="{{ url_for('static', filename='images/LOGO.jpeg', v=asset_version) }}" alt="" class="brand-mark-image">
+                </span>
+                <span class="brand-copy">
+                    <span class="brand-title">عfreet</span>
+                    <span class="brand-tagline">{{ _('apprendre avec douceur') }}</span>
+                </span>
+            </a>
+
+            <button class="navbar-toggler nav-premium-toggle border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="{{ _('Open menu') }}">
+                <span class="nav-toggle-box" aria-hidden="true">
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                </span>
+            </button>
+
+            <div class="collapse navbar-collapse navbar-platform-collapse" id="navbarMain">
+                <div class="navbar-mobile-panel w-100">
+                    {% if current_user.is_authenticated %}
+                        <ul class="navbar-nav nav-primary-cluster me-auto ms-lg-3 gap-lg-2 mt-3 mt-lg-0">
+                            {% if current_user.role in ['admin', 'maintenance'] %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint in ['main.dashboard', 'admin.dashboard', 'maintenance.dashboard'] or endpoint.startswith('admin.') or endpoint.startswith('progress.dashboard_') or endpoint.startswith('placement.') %}active{% endif %}" href="{{ url_for('main.dashboard') }}">
+                                        <i class="bi bi-house"></i>
+                                        <span>{{ _('Dashboard') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if current_user.role in ['admin', 'enseignant', 'eleve'] %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint.startswith('courses.') or endpoint.startswith('lessons.') or endpoint.startswith('quiz.') %}active{% endif %}" href="{{ url_for('courses.liste') }}">
+                                        <i class="bi bi-book"></i>
+                                        <span>{{ _('Courses') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if current_user.role == 'eleve' %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint == 'progress.dashboard_eleve' %}active{% endif %}" href="{{ url_for('progress.dashboard_eleve') }}">
+                                        <i class="bi bi-graph-up-arrow"></i>
+                                        <span>{{ _('My progress') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <span id="navbar-xp" class="nav-link nav-link-stat nav-xp-pill">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                        <span data-xp-value>{{ current_user.xp.points if current_user.xp else 0 }}</span>
+                                        <span>XP</span>
+                                    </span>
+                                </li>
+                            {% endif %}
+
+                            {% if current_user.role in ['enseignant', 'admin'] %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint == 'progress.dashboard_enseignant' %}active{% endif %}" href="{{ url_for('progress.dashboard_enseignant') }}">
+                                        <i class="bi bi-people"></i>
+                                        <span>{{ _('My students') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if current_user.role == 'admin' %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint in ['main.gestion_utilisateurs', 'main.creer_utilisateur', 'main.modifier_utilisateur'] %}active{% endif %}" href="{{ url_for('main.gestion_utilisateurs') }}">
+                                        <i class="bi bi-people-fill"></i>
+                                        <span>{{ _('Users') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint.startswith('placement.') %}active{% endif %}" href="{{ url_for('placement.admin_questions') }}">
+                                        <i class="bi bi-sliders"></i>
+                                        <span>{{ _('Placement') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+
+                            {% if current_user.role == 'maintenance' %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if endpoint.startswith('maintenance.') %}active{% endif %}" href="{{ url_for('maintenance.dashboard') }}">
+                                        <i class="bi bi-tools"></i>
+                                        <span>{{ _('Maintenance') }}</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+                        <ul class="navbar-nav nav-utility-cluster ms-auto align-items-lg-center gap-lg-2 mt-3 mt-lg-0">
+                            {% if current_user.role in ['eleve', 'admin'] %}
+                                <li
+                                    class="nav-item dropdown nav-notification-wrapper"
+                                    data-notification-center="true"
+                                    data-notification-stream="{{ '1' if notification_stream_enabled else '0' }}"
+                                    data-notification-stream-url="{{ url_for('notifications.stream') }}"
+                                    data-notification-read-all-url="{{ url_for('notifications.read_all') }}"
+                                    data-notification-inbox-url="{{ url_for('notifications.inbox') }}"
+                                >
+                                    <button
+                                        class="btn nav-notification-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                    >
+                                        <span class="nav-notification-icon">
+                                            <i class="bi bi-bell"></i>
+                                        </span>
+                                        <span class="nav-notification-label">{{ _('Notifications') }}</span>
+                                        <span class="nav-notification-count {% if not notification_unread %}is-hidden{% endif %}" data-notification-count>{{ notification_unread }}</span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end nav-notification-menu p-0">
+                                        <div class="nav-notification-menu__header">
+                                            <div>
+                                                <div class="fw-semibold">{{ _('Notifications') }}</div>
+                                                <div class="small text-muted"><span data-notification-count-label="true">{{ notification_unread }}</span> {{ _('non lues') }}</div>
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-link text-decoration-none" data-mark-all-notifications="true">
+                                                {{ _('Tout lire') }}
+                                            </button>
+                                        </div>
+                                        <div class="nav-notification-list" data-notification-preview-list="true">
+                                            {% if notification_items %}
+                                                {% for notification in notification_items %}
+                                                    {% set icon_class = 'bi-book' if notification.type == 'lesson_published' else 'bi-check-circle' if notification.type == 'exercise_corrected' else 'bi-award' if notification.type == 'badge_unlocked' else 'bi-chat-left-text' if notification.type == 'support_request' else 'bi-alarm' %}
+                                                    <a href="{{ notification.open_url }}" class="nav-notification-item {% if not notification.is_read %}is-unread{% endif %}">
+                                                        <span class="nav-notification-item__icon"><i class="bi {{ icon_class }}"></i></span>
+                                                        <span class="nav-notification-item__body">
+                                                            <span class="nav-notification-item__title">{{ notification.title }}</span>
+                                                            <span class="nav-notification-item__message">{{ notification.message }}</span>
+                                                            <span class="nav-notification-item__time">{{ notification.relative_time }}</span>
+                                                        </span>
+                                                    </a>
+                                                {% endfor %}
+                                            {% else %}
+                                                <div class="nav-notification-empty" data-notification-empty-state="true">
+                                                    <i class="bi bi-bell-slash"></i>
+                                                    <span>{{ _('Aucune notification') }}</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="nav-notification-menu__footer">
+                                            <a href="{{ url_for('notifications.inbox') }}" class="btn btn-outline-platform btn-sm w-100">{{ _("Ouvrir l'inbox") }}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-sm dropdown-toggle nav-language-toggle" data-bs-toggle="dropdown">
+                                    {{ lang_label }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end nav-utility-menu">
+                                    {% for language in language_options %}
+                                        <li>
+                                            <a class="dropdown-item{% if language.is_active %} active{% endif %}" href="{{ url_for('main.changer_langue', code=language.code, next=language_next_url) }}" data-native-nav="false">
+                                                {{ language.short_label }} - {{ language.native_label }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-profile-card {% if endpoint == 'main.profile' %}active{% endif %}" href="{{ url_for('main.profile') }}">
+                                    <span class="nav-profile-avatar">
+                                        {% if current_user.prenom %}
+                                            {{ current_user.prenom[0]|upper }}
+                                        {% elif current_user.nom %}
+                                            {{ current_user.nom[0]|upper }}
+                                        {% else %}
+                                            U
+                                        {% endif %}
+                                    </span>
+                                    <span class="nav-profile-copy">
+                                        <span class="nav-profile-name">{{ current_user.prenom or current_user.nom or current_user.email }}</span>
+                                        <span class="nav-role-pill">{{ current_user.role }}</span>
+                                    </span>
+                                    <i class="bi bi-chevron-right nav-profile-chevron"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-logout" href="{{ url_for('main.logout') }}" data-native-nav="false">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>{{ _('Logout') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav nav-utility-cluster ms-auto align-items-lg-center gap-lg-2 mt-3 mt-lg-0">
+                            <li class="nav-item dropdown">
+                                <button class="btn btn-sm dropdown-toggle nav-language-toggle" data-bs-toggle="dropdown">
+                                    {{ lang_label }}
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end nav-utility-menu">
+                                    {% for language in language_options %}
+                                        <li>
+                                            <a class="dropdown-item{% if language.is_active %} active{% endif %}" href="{{ url_for('main.changer_langue', code=language.code, next=language_next_url) }}" data-native-nav="false">
+                                                {{ language.short_label }} - {{ language.native_label }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">
+                                    <i class="bi bi-house-door"></i>
+                                    <span>{{ _('Home') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if endpoint == 'main.login' %}active{% endif %}" href="{{ url_for('main.login') }}">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                    <span>{{ _('Login') }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if endpoint == 'main.register' %}active{% endif %}" href="{{ url_for('main.register') }}">
+                                    <i class="bi bi-person-plus"></i>
+                                    <span>{{ _('Register') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-page-loader" aria-hidden="true">
+        <div class="app-page-loader-inner">
+            <div class="app-loader-line app-loader-line-lg"></div>
+            <div class="app-loader-line app-loader-line-md"></div>
+            <div class="app-loader-grid">
+                <div class="app-loader-card"></div>
+                <div class="app-loader-card"></div>
+                <div class="app-loader-card"></div>
+            </div>
+            <div class="app-loader-list">
+                <div class="app-loader-row"></div>
+                <div class="app-loader-row"></div>
+                <div class="app-loader-row"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-flash-stack">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container-fluid px-4 pt-3 flash-stack">
+                    {% for category, message in messages %}
+                        {% set mapped = 'success' if category in ['success'] else 'danger' if category in ['danger', 'error'] else 'warning' if category == 'warning' else 'info' %}
+                        <div class="alert alert-{{ mapped }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Close') }}"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main id="app-main" class="container-fluid px-4 py-4" data-app-region="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer-platform text-center py-3 mt-4">
+        {{ _("عfreet | Arabic learning platform") }}
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/page-init.js', v=asset_version) }}"></script>
+    <script id="app-bootstrap-data" type="application/json">
+        {
+            "csrfToken": {{ csrf_token()|tojson }},
+            "assetVersion": {{ asset_version|tojson }},
+            "uiStrings": {
+                "translationLabel": {{ _('Translation')|tojson }},
+                "listen": {{ _('Listen')|tojson }},
+                "pronounce": {{ _('Pronounce')|tojson }},
+                "example": {{ _('Example')|tojson }},
+                "unavailable": {{ _('Unavailable')|tojson }},
+                "pronunciationUnavailable": {{ _('Pronunciation unavailable on this device.')|tojson }}
+            }
+        }
+    </script>
+    <script>
+        const appBootstrapData = JSON.parse(
+            document.getElementById('app-bootstrap-data')?.textContent || '{}'
+        );
+
+        window.APP_CSRF_TOKEN = appBootstrapData.csrfToken || '';
+        window.APP_ASSET_VERSION = appBootstrapData.assetVersion || 'dev';
+        window.APP_UI_STRINGS = appBootstrapData.uiStrings || {};
+        const PREMIUM_BOOT_MIN_MS = 980;
+        const PREMIUM_NAV_MIN_MS = 140;
+        let premiumLoaderMode = 'boot';
+        let premiumLoaderVisible = true;
+        let premiumLoaderShownAt = Date.now();
+        let premiumLoaderHideTimer = null;
+        let premiumBootReady = false;
+        let premiumPageReady = document.readyState === 'complete';
+        const ARABIC_TEXT_PATTERN = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+/;
+        const ARABIC_TEXT_SPLIT_PATTERN = /([\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+)/g;
+
+        function getPremiumLoader() {
+            return document.getElementById('app-premium-loader');
+        }
+
+        function clearPremiumLoaderHideTimer() {
+            if (premiumLoaderHideTimer !== null) {
+                window.clearTimeout(premiumLoaderHideTimer);
+                premiumLoaderHideTimer = null;
+            }
+        }
+
+        function applyPremiumLoaderState() {
+            const loader = getPremiumLoader();
+            if (!loader) {
+                return;
+            }
+
+            loader.classList.toggle('app-premium-loader--visible', premiumLoaderVisible);
+            loader.classList.toggle('app-premium-loader--hidden', !premiumLoaderVisible);
+            loader.classList.toggle('app-premium-loader--boot', premiumLoaderMode === 'boot');
+            loader.classList.toggle('app-premium-loader--nav', premiumLoaderMode === 'nav');
+        }
+
+        function showPremiumLoader(mode) {
+            clearPremiumLoaderHideTimer();
+            premiumLoaderMode = mode;
+            premiumLoaderVisible = true;
+            premiumLoaderShownAt = Date.now();
+            applyPremiumLoaderState();
+        }
+
+        function hidePremiumLoader(force = false) {
+            const minDuration = premiumLoaderMode === 'boot' ? PREMIUM_BOOT_MIN_MS : PREMIUM_NAV_MIN_MS;
+            const elapsed = Date.now() - premiumLoaderShownAt;
+            const remaining = Math.max(minDuration - elapsed, 0);
+            if (!force && remaining > 0) {
+                clearPremiumLoaderHideTimer();
+                premiumLoaderHideTimer = window.setTimeout(() => {
+                    hidePremiumLoader(true);
+                }, remaining);
+                return;
+            }
+
+            clearPremiumLoaderHideTimer();
+            premiumLoaderVisible = false;
+            if (premiumLoaderMode === 'boot') {
+                premiumBootReady = true;
+            }
+            applyPremiumLoaderState();
+        }
+
+        function maybeHideBootPremiumLoader() {
+            if (!premiumPageReady || premiumBootReady === true) {
+                return;
+            }
+            hidePremiumLoader();
+        }
+
+        function jouerAudio(url, onError) {
+            if (!url) {
+                if (typeof onError === 'function') {
+                    onError();
+                }
+                return;
+            }
+
+            const audio = new Audio(url);
+            audio.preload = 'auto';
+
+            let settled = false;
+            let fallbackTimer = null;
+
+            const cleanup = () => {
+                if (fallbackTimer !== null) {
+                    window.clearTimeout(fallbackTimer);
+                    fallbackTimer = null;
+                }
+
+                audio.removeEventListener('error', triggerFallback);
+                audio.removeEventListener('stalled', triggerFallback);
+                audio.removeEventListener('abort', triggerFallback);
+                audio.removeEventListener('playing', markStarted);
+            };
+
+            const triggerFallback = () => {
+                if (settled) {
+                    return;
+                }
+
+                settled = true;
+                cleanup();
+
+                try {
+                    audio.pause();
+                    audio.removeAttribute('src');
+                } catch (_) {
+                    // Ignore cleanup failures and continue with the TTS fallback.
+                }
+
+                if (typeof onError === 'function') {
+                    onError();
+                }
+            };
+
+            const markStarted = () => {
+                if (settled) {
+                    return;
+                }
+                settled = true;
+                cleanup();
+            };
+
+            audio.addEventListener('error', triggerFallback, { once: true });
+            audio.addEventListener('stalled', triggerFallback, { once: true });
+            audio.addEventListener('abort', triggerFallback, { once: true });
+            audio.addEventListener('playing', markStarted, { once: true });
+
+            fallbackTimer = window.setTimeout(triggerFallback, 1800);
+
+            const playPromise = audio.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+                playPromise.catch(triggerFallback);
+            }
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        let navProgressTimer = null;
+
+        function setNavProgress(value) {
+            document.documentElement.style.setProperty('--app-nav-progress', `${value}%`);
+        }
+
+        function startNavProgress() {
+            clearInterval(navProgressTimer);
+            let progress = 12;
+            setNavProgress(progress);
+            navProgressTimer = window.setInterval(() => {
+                progress = Math.min(progress + 7, 82);
+                setNavProgress(progress);
+            }, 120);
+        }
+
+        function stopNavProgress() {
+            clearInterval(navProgressTimer);
+            setNavProgress(100);
+            window.setTimeout(() => {
+                setNavProgress(0);
+            }, 180);
+        }
+
+        function markNavigating() {
+            document.body.classList.add('app-is-navigating');
+            startNavProgress();
+        }
+
+        window.addEventListener('pageshow', () => {
+            document.body.classList.remove('app-is-navigating');
+            stopNavProgress();
+            premiumPageReady = true;
+            if (!premiumBootReady) {
+                maybeHideBootPremiumLoader();
+            }
+        });
+
+        window.addEventListener('app:navigation-start', () => {
+            showPremiumLoader('nav');
+            markNavigating();
+        });
+
+        window.addEventListener('app:navigation-stop', () => {
+            document.body.classList.remove('app-is-navigating');
+            stopNavProgress();
+            hidePremiumLoader();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPremiumLoader('boot');
+            window.appRunPageInitializers?.(document);
+            premiumPageReady = true;
+            maybeHideBootPremiumLoader();
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/native-nav.js', v=asset_version) }}"></script>
+    <script src="{{ url_for('static', filename='js/pwa.js', v=asset_version) }}"></script>
+    <div id="app-page-scripts" hidden>
+        {% block extra_js %}{% endblock %}
+    </div>
+</body>
+</html>
